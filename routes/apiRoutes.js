@@ -17,7 +17,7 @@ router.post('/notes', (req, res) => {
   function(err) {
     if(err) {
       console.log(err);
-      res.status(500).send('please try again.')
+      res.status(500).send('Save Error.')
     } else {
       res.json(save)
     };
@@ -25,4 +25,18 @@ router.post('/notes', (req, res) => {
   );
 });
 
+router.delete('/notes/:id', (req, res) => {
+  db = db.filter(note => note.id !== req.params.id)
+  fs.writeFile(path.join(__dirname, '../db/db.json'),
+  JSON.stringify(db),
+  function(err) {
+    if(err) {
+      console.log(err);
+      res.status(500).send('Delete error')
+    } else {
+      res.json(db)
+    };
+  }
+  );
+});
 module.exports = router;
